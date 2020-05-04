@@ -16,6 +16,7 @@ async function tokensInCirculation(web3) {
     const updatedAt = new Date();
     
     const totalSupply = BigInt(await contract.methods.totalSupply().call(block));
+    const decimals = BigInt(await contract.methods.decimals().call(block));
 
     const values = (await Promise.all([LONG_TERM_RESERVES, PRIVATE_SALE, TEAM_AND_FOUNDING_PARTNERS, ADVISORS].map(address => {
         return contract.methods.balanceOf(address).call(block);
@@ -26,8 +27,10 @@ async function tokensInCirculation(web3) {
     }, totalSupply);
 
     return {
+        contract: ADDRESS,
         supplyInCirculation: supplyInCirculation.toString(),
         totalSupply: totalSupply.toString(),
+        decimals: decimals.toString(),
         block,
         updatedAt,
     }
