@@ -13,6 +13,7 @@ function getContract(web3) {
 async function tokensInCirculation(web3) {
     const contract = getContract(web3);
     const block = await web3.eth.getBlockNumber();
+    const updatedAt = new Date();
     
     const totalSupply = BigInt(await contract.methods.totalSupply().call(block));
 
@@ -20,9 +21,16 @@ async function tokensInCirculation(web3) {
         return contract.methods.balanceOf(address).call(block);
     }))).map(BigInt);
 
-    return values.reduce((previousValue, currentValue) => {
+    const supplyInCirculation = values.reduce((previousValue, currentValue) => {
         return previousValue - currentValue;
     }, totalSupply);
+
+    return {
+        supplyInCirculation: supplyInCirculation.toString(),
+        totalSupply: totalSupply.toString(),
+        block,
+        updatedAt,
+    }
 }
 
 module.exports = {
