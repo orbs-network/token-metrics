@@ -30,7 +30,8 @@ async function tokensInCirculation(web3) {
     const staking = getStakingContract(web3);
 
     const block = await web3.eth.getBlockNumber();
-    const updatedAt = new Date();
+    const { timestamp } = await web3.eth.getBlock(block);
+    const updatedAt = new Date(timestamp * 1000);
     
     const totalSupply = BigInt(await erc20.methods.totalSupply().call(block));
     const decimals = BigInt(await erc20.methods.decimals().call(block));
@@ -53,6 +54,7 @@ async function tokensInCirculation(web3) {
         totalSupply: totalSupply.toString(),
         decimals: decimals.toString(),
         block,
+        blockTimestamp: timestamp,
         updatedAt,
     }
 }
