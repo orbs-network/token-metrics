@@ -47,6 +47,7 @@ async function tokensInCirculation(web3) {
 
     return {
         contract: ERC20_CONTRACT_ADDRESS,
+        stakingContract: STAKING_ADDRESS,
         supplyInCirculation: supplyInCirculation.toString(),
         totalSupply: totalSupply.toString(),
         decimals: decimals.toString(),
